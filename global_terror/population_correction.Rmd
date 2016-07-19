@@ -77,11 +77,11 @@ ggplot(aes(x = iyear, y = totVictims, color = region_txt), data = roughTer) +
 
 Pause and recall that we're looking at a brightly-colored plot of a heart-breaking number of `r sum(roughTer$totVictims)` individuals killed in terrorist attacks throughout the world.    
 
-*Proverbs 3:31 Do not envy a man of violence And do not choose any of his ways. #
+*Proverbs 3:31 Do not envy a man of violence, and do not choose any of his ways. #
 
-We'll get the population set to a similar place:
+We filter the population set to a similar place:
 
-```{r }
+```{r popFilters}
 
 majReg <- pop_reg %>%
   filter(YEAR == 2010) %>%
@@ -128,7 +128,8 @@ popMerge <- popRat %>%
 
 ```
 
-First we can try to approximate that Washington Post figure:
+First we can try to approximate that Washington Post figure.
+Note that we're working with annual data, not daily/monthly data, and yet the trends seem comparable. 2016 is a hard year for everyone.
 ```{r baseFigs}
 
 popTab1 <- popMerge %>%
@@ -181,9 +182,40 @@ ggplot(aes(x = iyear, y= prop_of_popKilled,
 ```
 Hey look, North America has disappeared. Violence in Central America and Central Asia jumps out, and terrorism in Western Europe and North America disappears. Africa
 
-Finally, we'l
+Finally, we'll adjust for proportion of Muslim population, to answer our original question.
 ```{relAdjust}
 
+iProp <- popMerge %>%
+  group_by(iyear, region_txt) %>%
+  mutate(totDeaths = sum(nkillVictim, na.rm = T),
+         totPop = sum(popNum),
+         totPopI = sum(popNum * islProp, na.rm = T),
+         totDeaths_I = totDeaths / totPopI,
+         scaledDeaths = totDeaths  / (1 / islProp))
+
+ggplot(aes(x = iyear, y = scaledDeaths, color = region_txt),
+       data = iProp) + 
+  geom_point() + theme_bw()
+
+iPropSum <- iProp %>%
+  group_by(iyear, region_txt) %>%
+  summarize(scaledDeaths = mean(scaledDeaths),
+            totPopI = sum(totPopI),
+            meanPropI = sum(totPopI) / sum(totPop))
+
+ggplot(aes(x = iyear, y = scaledDeaths, 
+           color = region_txt,
+           size = totPopI),
+       data = iPropSum) + 
+  geom_point() + theme_bw() + 
+ggtitle('Points show absolute size of Muslim population')
+
+ggplot(aes(x = iyear, y = scaledDeaths, 
+           color = region_txt,
+           size = meanPropI),
+       data = iPropSum) + 
+  geom_point() + theme_bw() + 
+ggtitle('Points show relative proportion of Muslim population')
 
 
 ```
