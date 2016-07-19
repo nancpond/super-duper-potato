@@ -17,7 +17,7 @@ If it was Muslim population adjusted it would look even more interesting, but I 
 Coupled with a personal burden, which is that the Western media [and dare I say, the American public?] seem to only care when white people are hurt..
 
 What we're wondering is, is there a difference in the frequency? intensity? destructive impact of? 'terrorism' by nation, by region of the world, by relative proportion of religious practice, by GDP, by some other factor?
-This is a long term question. Today's question is simply, **does a population-adjusted or identified-as-Muslim-population-adjusted look at scale of casualties in terrorist attacks look [i.e. visualized, graphic form, no tests of significance] different from the raw numbers put forth by the Washington Post**
+This is a long term question. Today's question is simply, **does a population-adjusted or identified-as-Muslim-population-adjusted comparison of the scale of casualties in terrorist attacks look [i.e. visualized, graphic form, no tests of significance] different from the raw numbers put forth by the Washington Post**
 
 ```{r}
 summary(cars)
